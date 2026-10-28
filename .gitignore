@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.vercel/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+operating-data/
+.local-postgres/
+*.log
+*.tsbuildinfo
+
+
