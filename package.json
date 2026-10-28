@@ -1,0 +1,39 @@
+{
+  "name": "kitchen-planner",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:local": "tsx scripts/dev-local.ts",
+    "build": "prisma generate && next build",
+    "vercel-build": "prisma generate && prisma db push && tsx prisma/seed.ts && next build",
+    "start": "next start",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "check:imports": "tsx scripts/check-import-fixtures.ts",
+    "check:persistence": "tsx scripts/check-persistence.ts",
+    "check:local-imports": "tsx scripts/check-local-imports.ts",
+    "check:calculations": "tsx scripts/check-calculations.ts",
+    "check:plan-api": "tsx scripts/check-plan-api.ts",
+    "check:agent-handoffs": "tsx scripts/check-agent-handoffs.ts",
+    "check:agent-read": "tsx scripts/check-agent-read.ts",
+    "check:agent-save": "tsx scripts/check-agent-save.ts",
+    "check:config": "tsx scripts/check-config.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "next": "^15.5.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "embedded-postgres": "17.10.0-beta.17",
+    "prisma": "^6.19.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

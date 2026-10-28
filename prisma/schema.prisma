@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model ReferenceData {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model ImportBatch {
+  id           String   @id @default(cuid())
+  kind         String
+  source       String
+  exportId     String?
+  contentHash  String
+  importedAt   DateTime @default(now())
+  rowCount     Int
+  accepted     Boolean  @default(true)
+  details      Json
+  @@unique([kind, contentHash])
+  @@unique([kind, exportId])
+  @@index([kind, importedAt])
+}
+
+model InventoryItem {
+  ingredientId String   @id
+  name         String
+  unit         String
+  onHand       Float
+  committed    Float
+  packSize     Float
+  packName     String
+  checkedAt    DateTime
+  importId     String
+}
+
+model StaffMember {
+  id             String   @id
+  name           String
+  employmentType String
+  role           String
+  skills         String[]
+  importId       String
+}
+
+model LeaveRecord {
+  id        String   @id
+  staffId   String
+  date      DateTime @db.Date
+  status    String
+  reason    String?
+  importId  String
+  @@index([staffId, date])
+}
+
+model AvailabilityRecord {
+  id        String   @id @default(cuid())
+  staffId   String
+  date      DateTime @db.Date
+  start     String
+  end       String
+  status    String
+  importId  String
+  @@unique([staffId, date])
+}
+
+model OrderLine {
+  id             String   @id
+  productionDate DateTime @db.Date
+  customer       String
+  productId      String
+  quantity       Int
+  status         String
+  receivedAt     DateTime
+  importId       String
+  @@index([productionDate, productId])
+}
+
+model AgentRun {
+  id            String   @id @default(cuid())
+  importVersion String
+  model         String
+  status        String
+  startedAt     DateTime @default(now())
+  finishedAt    DateTime?
+  handoffTrace  Json?
+  recommendations AgentRecommendation[]
+  @@index([importVersion, startedAt])
+}
+
+model AgentRecommendation {
+  id        String   @id @default(cuid())
+  runId     String
+  agent     String
+  result    Json
+  run       AgentRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  @@unique([runId, agent])
+}
+
